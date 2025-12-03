@@ -1,21 +1,28 @@
 import java.util.Scanner;
 
-public class calc {
+public class MiniCalculator {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         boolean continueCalculating = true;
 
         while (continueCalculating) {
-            System.out.print("Enter first number: ");
-            double a = sc.nextDouble();
-            System.out.print("Enter second number: ");
-            double b = sc.nextDouble();
-            System.out.print("Enter operator (+, -, *, /, %): ");
-            char op = sc.next().charAt(0);
+            double a = 0, b = 0;
+            char op = ' ';
+            try {
+                System.out.print("Enter first number: ");
+                a = sc.nextDouble();
+                System.out.print("Enter second number: ");
+                b = sc.nextDouble();
+                System.out.print("Enter operator (+, -, *, /, %): ");
+                op = sc.next().charAt(0);
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter valid numbers and operator.");
+                sc.nextLine(); // Clear the invalid input
+                continue;
+            }
 
             try {
                 double result = 0;
-                boolean validOp = true;
                 switch(op) {
                     case '+':
                         result = a + b;
@@ -27,22 +34,21 @@ public class calc {
                         result = a * b;
                         break;
                     case '/':
-                        if(b == 0) throw new ArithmeticException();
+                        if(b == 0) throw new ArithmeticException("Cannot divide by zero");
                         result = a / b;
                         break;
                     case '%':
-                        if(b == 0) throw new ArithmeticException();
+                        if(b == 0) throw new ArithmeticException("Cannot divide by zero");
                         result = a % b;
                         break;
                     default:
-                        System.out.println("Invalid operator");
-                        validOp = false;
+                        throw new IllegalArgumentException("Invalid operator");
                 }
-                if (validOp) {
-                    System.out.println("Result: " + result);
-                }
+                System.out.println("Result: " + result);
             } catch(ArithmeticException e) {
-                System.out.println("Cannot divide by zero");
+                System.out.println(e.getMessage());
+            } catch(IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
 
             System.out.print("Do you want to perform another calculation? (y/n): ");
